@@ -1,0 +1,24 @@
+// Get company by ID (public)
+export const getCompanyById = async (req, res) => {
+    try {
+        const company = await Company.findById(req.params.id)
+            .select('-password') // Exclude password field
+        
+        if (!company) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'Company not found' 
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            company
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
+    }
+};
